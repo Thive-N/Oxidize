@@ -1,6 +1,9 @@
 use clap::{Parser, Subcommand};
 use std::path::{Path, PathBuf};
 
+mod crypto;
+mod oxide;
+
 #[derive(Parser, Debug)]
 #[command(name = "Oxidize", version, about)]
 struct Args {
@@ -13,6 +16,8 @@ enum Command {
     Init {
         #[arg(short, long, default_value = ".")]
         files: Vec<PathBuf>,
+        #[arg(long, default_value_t = false)]
+        force: bool,
     },
     /// decrypt the specified files
     Decrypt {
@@ -47,20 +52,18 @@ enum Command {
 fn main() {
     let args = Args::parse();
     match args.command {
-        Command::Init { files } => {}
+        Command::Init { files, force } => {
+            oxide::create_oxide_file(files, force).expect("Failed to create .oxide file")
+        }
         Command::Decrypt {
             files,
             password,
             keep,
-        } => {}
+        } => crypto::decrypt(files, password, keep),
         Command::Encrypt {
             files,
             password,
             keep,
         } => {}
     }
-}
-
-fn read_password() -> String {
-    rpassword::prompt_password("enter password> ").unwrap()
 }
