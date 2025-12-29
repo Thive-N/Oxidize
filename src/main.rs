@@ -64,6 +64,6 @@ fn main() {
             files,
             password,
             keep,
-        } => {}
+        } => crypto::encrypt(files, password, keep),
     }
 }

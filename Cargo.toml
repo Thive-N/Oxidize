@@ -7,3 +7,5 @@ edition = "2024"
 clap = { version = "4.5.53", features = ["derive"] }
 rpassword = "7.4"
 walkdir = "2"
+aes-gcm = "0.10.3"
+argon2 = "0.4.0"
